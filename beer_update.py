@@ -1,5 +1,3 @@
-import urllib
-import urllib2
 from datetime import date
 from pymongo import MongoClient
 import requests
@@ -18,6 +16,7 @@ mongodb_host = 'localhost'
 mongodb_port = 27017
 http_port = 8888
 version = '0.0.1'
+
 
 # TODO: Add logic around not crashing if unavailable
 db = MongoClient(mongodb_host, mongodb_port).beer
@@ -51,15 +50,18 @@ class Beer(object):
 
     def obtain_page(self, loc):
         # Obtain LC Page
-        req = urllib2.Request(loc)
         dprint('{{ Retrieving page %s' % loc)
         try:
-            lc_resp = urllib2.urlopen(req)
-            return lc_resp.read()
-        except urllib2.URLError as e:
+            req = requests.get(loc)
+        except Exception as e:
             print("Error: %s" % e.reason)
             raise e
-        dprint('}} complete page %s' % loc)
+        if not req.ok:
+            print ("Error: %s" % req.reason)
+            raise Exception(req.reason)
+        else:
+            dprint('}} complete page %s' % loc)
+            return req.text
 
     def beer_update(self, loc=None, fn_retrieval=None, db=None):
         if not loc:
@@ -151,7 +153,10 @@ class Beer(object):
                             print "sku %s inserted" % sku
 
 if __name__ == '__main__':
+    # Set proxies with:
+    # $ export HTTP_PROXY="http://10.10.1.10:3128"
+    # $ export HTTPS_PROXY="http://10.10.1.10:1080"
     b = Beer()
-    print "count %s" % b.beer_update(db=db)
+    b.beer_update(db=db)
 
 

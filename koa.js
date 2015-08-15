@@ -66,7 +66,7 @@ app.use(function *pageNotFound(next){
 
 
 /* Setup routes to generator fns */
-app.use(route.get('/beer/id/:id', api.id));
+app.use(route.get('/beer/sku/:sku', api.beersku));
 app.use(route.get('/beer/all/:term', api.all));
 app.use(route.get('/beer/all/', api.et));
 app.use(route.get('/beer/single/:term', api.single));
