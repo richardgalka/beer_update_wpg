@@ -13,11 +13,11 @@ function resobj() {
   this.result = {};
 };
 
-exports.id = function *(sku) {
+exports.beersku = function *(sku) {
   sku = decodeURI(sku);
   var beers = wrap(db.get('beers'));
   var rbeers = yield beers.findOne({sku: sku})
-  this.body = {beer:rbeers};
+  this.body = {beer:rbeers, sku:sku};
 };
 
 /**
