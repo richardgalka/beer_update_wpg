@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Beer Update</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+
+<style>
+table, th , td {
+  border: 1px solid grey;
+  border-collapse: collapse;
+  padding: 5px;
+}
+table tr:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+  background-color: #ffffff;
+}
+.sortorder:after {
+	content: '\25b2';
+}
+.sortorder.reverse:after {
+	content: '\25bc';
+}
+</style>
+
+</head>
+<body>
+
+<div data-ng-app="beerApp" data-ng-controller="indexCtrl">
+	<label for="finfo">Filter</label>
+	<input name="finfo" type="text" data-ng-model="finfo" />
+	<label for="bOrderBy">OrderBy:</label>
+	<select name="bOrderBy" data-ng-model="predicate">
+		<option value="name">Name</option>
+		<option value="region">Region</option>
+		<option value="price">Cost</option>
+		<option value="quantity">Quantity</option>
+		<option value="discontinued">Discontinued</option>
+	</select>
+	<p />
+	<table>
+		<thead>
+			<tr>
+				<th>Count</th>
+				<th ng-click="order('name')">Name
+					<span class="sortorder"
+						ng-show="predicate === 'name'"
+						ng-class="{reverse:reverse}">
+					</span>
+				</th>
+				<th ng-click="order('region')">Region
+					<span class="sortorder"
+						ng-show="predicate === 'region'"
+						ng-class="{reverse:reverse}">
+					</span>
+				</th>
+				<th ng-click="order('price')">Cost
+					<span class="sortorder"
+						ng-show="predicate === 'price'"
+						ng-class="{reverse:reverse}">
+					</span>
+				</th>
+				<th ng-click="order('quantity')">Quantity
+					<span class="sortorder"
+						ng-show="predicate === 'quantity'"
+						ng-class="{reverse:reverse}">
+					</span>
+				</th>
+				<th ng-click="order('discontinued')">Discontinued
+					<span class="sortorder"
+						ng-show="predicate === 'discontinued'"
+						ng-class="{reverse:reverse}">
+					</span>
+				</th>
+			</tr>
+		</thead>
+		<tr data-ng-repeat="x in beers | filter:finfo | orderBy:predicate:reverse"
+			name="{{x.sku}}"
+			ng-click="getBeer(x.sku)">
+			<td>{{$index+1}}</td>
+			<td>{{x.name}}</td>
+			<td>{{x.region}}</td>
+			<td>{{x.price}}</td>
+			<td>{{x.quantity}}</td>
+			<td>{{x.discontinued}}</td>
+		</tr>
+	</table>
+
+</div>
+
+<script>
+	var app = angular.module('beerApp', []);
+	app.controller('indexCtrl', function($scope, $http) {
+		$scope.reverse = false;
+		$scope.predicate = 'name';
+		$scope.order = function(predicate) {
+			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
+			$scope.predicate = predicate;
+		};
+		$http.get("http://localhost:3000/beer/all/")
+		.success(function(response) {
+			$scope.beers = response.result;
+		});
+		$scope.getBeer = function(sku) {
+			$http.get("http://localhost:3000/beer/single/"+sku+"?key=sku")
+			.success(function(response) {
+				alert(response);
+			});
+		};
+	})
+</script>
+
+
+</body>
+</html>

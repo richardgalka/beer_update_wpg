@@ -26,6 +26,9 @@ exports.beersku = function *(sku) {
 exports.all = function *(term){
   /* Only keys that reference strings will work */
   /* TODO: Check key is one of proper options */
+  /* TODO: Provide whitelist of keys to respond with:
+          - name, region, price, quantity, discontinued, date
+  */
   var query = {};
   key = this.request.query.key || 'name';
   query[key] = new RegExp(escapeRegExp(term), 'i');
@@ -35,7 +38,7 @@ exports.all = function *(term){
 };
 
 exports.et = function *(){
-  var res = yield beers.find(/.*/);
+  var res = yield beers.find(/.*/, {fields: {'_id':0, 'description':0, 'image':0}});
   this.body = new resobj();
   this.body.result = res;
 };

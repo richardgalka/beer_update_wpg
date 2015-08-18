@@ -3,4 +3,4 @@ test.js
 coverage
 npm-debug.log
 operational/
-
+.DS_Store
