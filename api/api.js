@@ -7,7 +7,7 @@ function escapeRegExp(string){
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function resobj() {
+function ResObj() {
   this.success = true;
   this.error = null;
   this.result = {};
@@ -30,16 +30,16 @@ exports.all = function *(term){
           - name, region, price, quantity, discontinued, date
   */
   var query = {};
-  key = this.request.query.key || 'name';
+  var key = this.request.query.key || 'name';
   query[key] = new RegExp(escapeRegExp(term), 'i');
   var res = yield beers.find(query);
-  this.body = new resobj();
+  this.body = new ResObj();
   this.body.result = res;
 };
 
 exports.et = function *(){
   var res = yield beers.find(/.*/, {fields: {'_id':0, 'description':0, 'image':0}});
-  this.body = new resobj();
+  this.body = new ResObj();
   this.body.result = res;
 };
 
@@ -49,18 +49,17 @@ exports.et = function *(){
 exports.single = function *(term){
   var query = {};
   //\* TODO: Check key is one of proper options /*
-  key = this.request.query.key || 'name';
+  var key = this.request.query.key || 'name';
   query[key] = new RegExp(escapeRegExp(term), 'i');
   var res = yield beers.findOne(query);
-  this.body = new resobj();
+  this.body = new ResObj();
   this.body.result = res;
 };
 
 exports.hist = function *(term){
-  var query = {};
-  key = this.request.query.key || 'date_added';
+  var key = this.request.query.key || 'date_added';
   var res = yield beers.distinct(key, {});
-  this.body = new resobj();
+  this.body = new ResObj();
   this.body.result = res;
 };
 
