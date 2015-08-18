@@ -40,6 +40,12 @@ app.use(function *(next){
   this.set('X-Response-Time', ms + 'ms');
 });
 
+// Access-Control-Allow-Origin: * - cause we are read only
+app.use(function *(next){
+  yield next;
+  this.set('Access-Control-Allow-Origin', '*');
+});
+
 // Handle 404 (and others)
 app.use(function *pageNotFound(next){
   yield next;
