@@ -2,7 +2,9 @@
 <html>
 <head>
 	<title>Beer Update</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.3/ui-bootstrap-tpls.js"></script>
 
 <style>
 table, th , td {
@@ -22,12 +24,17 @@ table tr:nth-child(even) {
 .sortorder.reverse:after {
 	content: '\25bc';
 }
+/* bootstrap ui cursor styling */
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 </style>
 
 </head>
 <body>
 
 <div data-ng-app="beerApp" data-ng-controller="indexCtrl">
+	<div>
+		Inspecting Beer: {{beerInspect.name}}
+	</div>
 	<label for="finfo">Filter</label>
 	<input name="finfo" type="text" data-ng-model="finfo" />
 	<label for="bOrderBy">OrderBy:</label>
@@ -77,7 +84,7 @@ table tr:nth-child(even) {
 		</thead>
 		<tr data-ng-repeat="x in beers | filter:finfo | orderBy:predicate:reverse"
 			name="{{x.sku}}"
-			ng-click="getBeer(x.sku)">
+			ng-click="beerSelect(x)">
 			<td>{{$index+1}}</td>
 			<td>{{x.name}}</td>
 			<td>{{x.region}}</td>
@@ -89,28 +96,8 @@ table tr:nth-child(even) {
 
 </div>
 
-<script>
-	var app = angular.module('beerApp', []);
-	app.controller('indexCtrl', function($scope, $http) {
-		$scope.reverse = false;
-		$scope.predicate = 'name';
-		$scope.order = function(predicate) {
-			$scope.reverse = ($scope.predicate === predicate) ? !$scope.reverse : false;
-			$scope.predicate = predicate;
-		};
-		$http.get("http://localhost:3000/beer/all/")
-		.success(function(response) {
-			$scope.beers = response.result;
-		});
-		$scope.getBeer = function(sku) {
-			$http.get("http://localhost:3000/beer/single/"+sku+"?key=sku")
-			.success(function(response) {
-				alert(response);
-			});
-		};
-	})
-</script>
-
+<script src="beerApp.js"></script>
+<script src="indexCtrl.js"></script>
 
 </body>
 </html>
