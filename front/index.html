@@ -74,6 +74,12 @@ table tr:nth-child(even) {
 						ng-class="{reverse:reverse}">
 					</span>
 				</th>
+				<th ng-click="order('date_added')">Date Added
+					<span class="sortorder"
+						ng-show="predicate ==== 'date_added'"
+						ng-class="{reverse:reverse}">
+					</span>
+				</th>
 				<th ng-click="order('discontinued')">Discontinued
 					<span class="sortorder"
 						ng-show="predicate === 'discontinued'"
@@ -90,6 +96,7 @@ table tr:nth-child(even) {
 			<td>{{x.region}}</td>
 			<td>{{x.price}}</td>
 			<td>{{x.quantity}}</td>
+			<td>{{x.date_added}}</td>
 			<td>{{x.discontinued}}</td>
 		</tr>
 	</table>

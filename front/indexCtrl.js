@@ -1,6 +1,6 @@
 app.controller('indexCtrl', function($scope, $http) {
-	$scope.reverse = false;
-	$scope.predicate = 'name';
+	$scope.reverse = true;
+	$scope.predicate = 'date_added';
 	$scope.beerInspect = {};
 	$scope.beerSelect = function(item) {
 		$scope.beerInspect = item;
