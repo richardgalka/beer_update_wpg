@@ -1,0 +1,35 @@
+@nice-blue: #5B83AD;
+@light-blue: @nice-blue + #111;
+
+.downarrow {
+	content: '\25b2';
+}
+
+.uparrow {
+	content: '\25bc';
+}
+
+.sortorder:after {
+	.downarrow;
+}
+.sortorder.reverse:after {
+	.uparrow;
+}
+
+.lightblue {
+	color: @light-blue;
+}
+
+.header {
+	color: @light-blue;
+}
+
+#navbar-brand {
+	.lightblue;
+}
+
+
+/* bootstrap ui cursor styling */
+.nav, .pagination, .carousel, .panel-title a {
+	 cursor: pointer; 
+}
