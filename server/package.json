@@ -2,7 +2,7 @@
   "name": "beergardens",
   "description": "Beer Gardens",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "koa.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "iojs koa.js"
@@ -16,5 +16,5 @@
     "thunkify": "^2.1.2"
   },
   "author": "Richard Galka",
-  "license": "Apache-2.0"
+  "license": "MIT"
 }
